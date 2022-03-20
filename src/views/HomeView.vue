@@ -9,6 +9,7 @@
       <input type="submit" value="Search" :disabled="loading" />
     </form>
     <Movie-list :movies="movies" />
+    <div v-if="notfound" class="not-found">Oops! Record doesn't exist</div>
   </div>
 </template>
 
@@ -22,24 +23,22 @@ export default {
   setup() {
     const search = ref("");
     const movies = ref([]);
-    let loading = false;
+    let loading = ref(false);
+    let notfound = ref(false);
     const searchMovies = () => {
       if (search.value != "") {
-        loading = true;
         fetch(
           `${env.baseUrl}search/movie?api_key=${env.apiKey}&query=${search.value}`
         )
           .then((response) => response.json())
           .then((data) => {
-            loading = false;
             movies.value = data.results;
-          })
-          .catch(() => {
             loading = false;
+            notfound.value = movies.value.length === 0;
           });
       }
     };
-    return { search, movies, searchMovies, loading };
+    return { search, movies, searchMovies, loading, notfound };
   },
 };
 </script>
@@ -88,6 +87,10 @@ export default {
         }
       }
     }
+  }
+  .not-found {
+    text-align: center;
+    color: red;
   }
 }
 </style>
