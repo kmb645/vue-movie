@@ -60,6 +60,9 @@ import personC from "@/components/personC.vue";
 
 export default {
   components: { tvC, movieC, personC },
+  mounted() {
+    this.searchMovies();
+  },
   setup() {
     const search = ref("");
     const movies = ref([]);
@@ -68,17 +71,17 @@ export default {
     let catType = reactive("movie");
     const setCatType = (p) => (catType = p);
     const searchMovies = () => {
+      let url = `${env.baseUrl}trending/all/day?api_key=${env.apiKey}`;
       if (search.value != "") {
-        fetch(
-          `${env.baseUrl}search/${catType}?api_key=${env.apiKey}&query=${search.value}`
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            movies.value = data.results;
-            loading = false;
-            notfound.value = movies.value.length === 0;
-          });
+        url = `${env.baseUrl}search/${catType}?api_key=${env.apiKey}&query=${search.value}`;
       }
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          movies.value = data.results;
+          loading = false;
+          notfound.value = movies.value.length === 0;
+        });
     };
     return {
       search,
