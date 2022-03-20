@@ -12,10 +12,7 @@
       <div class="movie" v-for="movie in movies" :key="movie.id">
         <router-link :to="'/movie/' + movie.id" class="movie-link">
           <div class="movie-image">
-            <img
-              :src="`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`"
-              alt="Movie Poster"
-            />
+            <ImageView :movie="movie" />
             <div class="type">Type</div>
           </div>
           <div class="movie-detail">
@@ -31,7 +28,9 @@
 <script>
 import { ref } from "vue";
 import env from "@/env.js";
+import ImageView from "@/components/ImageView.vue";
 export default {
+  components: { ImageView },
   setup() {
     const search = ref("terminator");
     const movies = ref([]);

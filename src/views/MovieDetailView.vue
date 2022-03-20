@@ -2,10 +2,7 @@
   <div class="movie-detail">
     <h2>{{ movie.title }}</h2>
     <p>{{ movie.release_date }}</p>
-    <img
-      :src="`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`"
-      alt="Movie Poster"
-    />
+    <ImageView :movie="movie" />
     <p>{{ movie.overview }}</p>
   </div>
 </template>
@@ -13,6 +10,7 @@
 import { ref, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
 import env from "@/env.js";
+import ImageView from "@/components/ImageView.vue";
 export default {
   setup() {
     const movie = ref({});
@@ -26,6 +24,7 @@ export default {
     });
     return { movie };
   },
+  components: { ImageView },
 };
 </script>
 
