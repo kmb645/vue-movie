@@ -1,6 +1,6 @@
 <template>
   <div class="movies-list">
-    <div class="movie" v-for="person in movies" :key="person.id">
+    <div class="movie" v-for="person in data" :key="person.id">
       <router-link :to="'/movie/' + person.id" class="movie-link">
         <div class="movie-image">
           <ImagePerson :movie="person" />
@@ -18,7 +18,7 @@
 import ImagePerson from "@/components/ImagePerson.vue";
 export default {
   components: { ImagePerson },
-  props: ["movies"],
+  props: ["data"],
 };
 </script>
 <style lang="scss">

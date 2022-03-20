@@ -1,14 +1,14 @@
 <template>
   <div class="movies-list">
-    <div class="movie" v-for="movie in movies" :key="movie.id">
-      <router-link :to="'/movie/' + movie.id" class="movie-link">
+    <div class="movie" v-for="tv in data" :key="tv.id">
+      <router-link :to="'/movie/' + tv.id" class="movie-link">
         <div class="movie-image">
-          <ImageView :movie="movie" />
-          <div class="type">Type</div>
+          <ImageView :movie="tv" />
+          <div class="type">{{ tv.vote_average }}</div>
         </div>
         <div class="movie-detail">
-          <p class="year">{{ movie.release_date }}</p>
-          <h3>{{ movie.title }}</h3>
+          <p class="year">{{ tv.first_air_date }}</p>
+          <h3>{{ tv.name }}</h3>
         </div>
       </router-link>
     </div>
@@ -18,7 +18,7 @@
 import ImageView from "@/components/ImageView.vue";
 export default {
   components: { ImageView },
-  props: ["movies"],
+  props: ["data"],
 };
 </script>
 <style lang="scss">

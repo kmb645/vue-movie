@@ -1,6 +1,6 @@
 <template>
   <div class="movies-list">
-    <div class="movie" v-for="movie in movies" :key="movie.id">
+    <div class="movie" v-for="movie in data" :key="movie.id">
       <router-link :to="'/movie/' + movie.id" class="movie-link">
         <div class="movie-image">
           <ImageView :movie="movie" />
@@ -18,7 +18,7 @@
 import ImageView from "@/components/ImageView.vue";
 export default {
   components: { ImageView },
-  props: ["movies"],
+  props: ["data"],
 };
 </script>
 <style lang="scss">

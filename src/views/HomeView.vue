@@ -44,7 +44,7 @@
 
       <input type="submit" value="Search" :disabled="loading" />
     </form>
-    <component :is="catType" :movies="movies" />
+    <component :is="catType" :data="movies" />
 
     <div v-if="notfound" class="not-found">Oops! Record doesn't exist</div>
   </div>
