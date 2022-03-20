@@ -3,32 +3,74 @@
     <form @submit.prevent="searchMovies()" class="search-box">
       <input
         type="text"
+        :required="true"
         placeholder="Search for a movie, tv show, person....."
         v-model="search"
       />
+      <label class="container"
+        >Movie
+        <input
+          type="radio"
+          checked="checked"
+          name="radio"
+          value="movie"
+          v-model="catType"
+          @click="setCatType('movie')"
+        />
+        <span class="checkmark"></span>
+      </label>
+      <label class="container"
+        >TV show
+        <input
+          type="radio"
+          name="radio"
+          value="tv"
+          @click="setCatType('tv')"
+          v-model="catType"
+        />
+        <span class="checkmark"></span>
+      </label>
+      <label class="container"
+        >Person
+        <input
+          type="radio"
+          name="radio"
+          @click="setCatType('person')"
+          value="person"
+          v-model="catType"
+        />
+        <span class="checkmark"></span>
+      </label>
+
       <input type="submit" value="Search" :disabled="loading" />
     </form>
-    <Movie-list :movies="movies" />
+    <component :is="catType" :movies="movies" />
+
     <div v-if="notfound" class="not-found">Oops! Record doesn't exist</div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import env from "@/env.js";
 
-import MovieList from "@/components/MovieList.vue";
+import movie from "@/components/movie.vue";
+import tv from "@/components/tv.vue";
+import person from "@/components/person.vue";
+
 export default {
-  components: { MovieList },
+  components: { tv, movie, person },
   setup() {
     const search = ref("");
     const movies = ref([]);
     let loading = ref(false);
     let notfound = ref(false);
+    let catType = reactive("movie");
+    const setCatType = (p) => (catType = p);
     const searchMovies = () => {
       if (search.value != "") {
         fetch(
-          `${env.baseUrl}search/movie?api_key=${env.apiKey}&query=${search.value}`
+          `${env.baseUrl}search/${catType}?api_key=${env.apiKey}&query=${search.value}`
         )
           .then((response) => response.json())
           .then((data) => {
@@ -38,8 +80,16 @@ export default {
           });
       }
     };
-    return { search, movies, searchMovies, loading, notfound };
-  },
+    return {
+      search,
+      movies,
+      searchMovies,
+      loading,
+      notfound,
+      catType,
+      setCatType
+    };
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -91,6 +141,71 @@ export default {
   .not-found {
     text-align: center;
     color: red;
+  }
+
+  /* The container */
+  .container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: white;
+  }
+
+  /* Hide the browser's default radio button */
+  .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  /* Create a custom radio button */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 50%;
+  }
+
+  /* On mouse-over, add a grey background color */
+  .container:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+
+  /* When the radio button is checked, add a blue background */
+  .container input:checked ~ .checkmark {
+    background-color: #2196f3;
+  }
+
+  /* Create the indicator (the dot/circle - hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  /* Show the indicator (dot/circle) when checked */
+  .container input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  /* Style the indicator (dot/circle) */
+  .container .checkmark:after {
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
   }
 }
 </style>
