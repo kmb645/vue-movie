@@ -44,7 +44,7 @@
 
       <input type="submit" value="Search" :disabled="loading" />
     </form>
-    <component :is="catType" :data="movies" />
+    <component :is="`${catType}C`" :data="movies" />
 
     <div v-if="notfound" class="not-found">Oops! Record doesn't exist</div>
   </div>
@@ -54,12 +54,12 @@
 import { ref, reactive } from "vue";
 import env from "@/env.js";
 
-import movie from "@/components/movie.vue";
-import tv from "@/components/tv.vue";
-import person from "@/components/person.vue";
+import movieC from "@/components/movieC.vue";
+import tvC from "@/components/tvC.vue";
+import personC from "@/components/personC.vue";
 
 export default {
-  components: { tv, movie, person },
+  components: { tvC, movieC, personC },
   setup() {
     const search = ref("");
     const movies = ref([]);
@@ -87,9 +87,9 @@ export default {
       loading,
       notfound,
       catType,
-      setCatType
+      setCatType,
     };
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
