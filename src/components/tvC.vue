@@ -1,7 +1,7 @@
 <template>
   <div class="movies-list">
     <div class="movie" v-for="tv in data" :key="tv.id">
-      <router-link :to="'/movie/' + tv.id" class="movie-link">
+      <router-link :to="'/tv/' + tv.id" class="movie-link">
         <div class="movie-image">
           <ImageView :movie="tv" />
           <div class="type">{{ tv.vote_average }}</div>

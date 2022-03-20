@@ -1,7 +1,7 @@
 <template>
   <div class="movies-list">
     <div class="movie" v-for="person in data" :key="person.id">
-      <router-link :to="'/movie/' + person.id" class="movie-link">
+      <router-link :to="'/person/' + person.id" class="movie-link">
         <div class="movie-image">
           <ImagePerson :movie="person" />
           <div class="type">{{ person.known_for_department }}</div>
