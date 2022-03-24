@@ -1,49 +1,5 @@
 <template>
   <div class="home">
-    <form @submit.prevent="searchMovies()" class="search-box">
-      <input
-        type="text"
-        :required="true"
-        placeholder="Search for a movie, tv show, person....."
-        v-model="search"
-      />
-      <label class="container"
-        >Movie
-        <input
-          type="radio"
-          checked="checked"
-          name="radio"
-          value="movie"
-          v-model="catType"
-          @click="setCatType('movie')"
-        />
-        <span class="checkmark"></span>
-      </label>
-      <label class="container"
-        >TV show
-        <input
-          type="radio"
-          name="radio"
-          value="tv"
-          @click="setCatType('tv')"
-          v-model="catType"
-        />
-        <span class="checkmark"></span>
-      </label>
-      <label class="container"
-        >Person
-        <input
-          type="radio"
-          name="radio"
-          @click="setCatType('person')"
-          value="person"
-          v-model="catType"
-        />
-        <span class="checkmark"></span>
-      </label>
-
-      <input type="submit" value="Search" :disabled="loading" />
-    </form>
     <component :is="`${catType}C`" :data="movies" />
 
     <div v-if="notfound" class="not-found">Oops! Record doesn't exist</div>
@@ -53,6 +9,7 @@
 <script>
 import { ref, reactive } from "vue";
 import env from "@/env.js";
+import { useRoute } from "vue-router";
 
 import movieC from "@/components/movieC.vue";
 import tvC from "@/components/tvC.vue";
@@ -64,7 +21,7 @@ export default {
     this.searchMovies();
   },
   setup() {
-    const search = ref("");
+    const route = useRoute();
     const movies = ref([]);
     let loading = ref(false);
     let notfound = ref(false);
@@ -72,8 +29,8 @@ export default {
     const setCatType = (p) => (catType = p);
     const searchMovies = () => {
       let url = `${env.baseUrl}trending/all/day?api_key=${env.apiKey}`;
-      if (search.value != "") {
-        url = `${env.baseUrl}search/${catType}?api_key=${env.apiKey}&query=${search.value}`;
+      if (route.query.q) {
+        url = `${env.baseUrl}search/${catType}?api_key=${env.apiKey}&query=${route.query.q}`;
       }
       fetch(url)
         .then((response) => response.json())
@@ -84,7 +41,6 @@ export default {
         });
     };
     return {
-      search,
       movies,
       searchMovies,
       loading,
@@ -92,6 +48,11 @@ export default {
       catType,
       setCatType,
     };
+  },
+  watch: {
+    $route() {
+      this.searchMovies();
+    },
   },
 };
 </script>

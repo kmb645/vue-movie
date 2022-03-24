@@ -7,7 +7,21 @@ import PersonDetailView from "../views/PersonDetailView.vue";
 const routes = [
   {
     path: "/",
-    name: "home",
+    redirect: { name: "movies" },
+  },
+  {
+    path: "/movies",
+    name: "movies",
+    component: HomeView,
+  },
+  {
+    path: "/tv-shows",
+    name: "tvShow",
+    component: HomeView,
+  },
+  {
+    path: "/person",
+    name: "person",
     component: HomeView,
   },
   {

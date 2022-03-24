@@ -4,7 +4,6 @@
       <router-link :to="'/movie/' + movie.id" class="movie-link">
         <div class="movie-image">
           <ImageView :movie="movie" />
-          <div class="type">Type</div>
         </div>
         <div class="movie-detail">
           <p class="year">{{ movie.release_date }}</p>
